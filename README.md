@@ -11,6 +11,7 @@
 5. npm install -D @babel/core @babel/preset-env @babel/preset-react @babel/preset-typescript babel-loader
 6. npm install -D html-webpack-plugin
 7. npm install -D style-loader css-loader
+8. npm install -D tailwindcss postcss autoprefixer
 ```
 
 
