@@ -1,2 +1,17 @@
 # customerLabs-assessment
-reactjs assessment using webpack
+## Reactjs assessment using webpack
+
+### Project Setup
+
+```console
+1. npm init -y
+2. npm install react react-dom
+3. npm install -D typescript @types/react @types/react-dom
+4. npm install -D webpack webpack-cli webpack-dev-server
+5. npm install -D @babel/core @babel/preset-env @babel/preset-react @babel/preset-typescript babel-loader
+6. npm install -D html-webpack-plugin
+7. npm install -D style-loader css-loader
+```
+
+
+
