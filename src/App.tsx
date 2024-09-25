@@ -1,11 +1,15 @@
 import React from 'react';
+import { BrowserRouter, Route, Routes } from "react-router-dom";
 import "./index.css"
+import ViewAudience from '@/pages/Audience/ViewAudience';
 
-const App:React.FC = () => {
+const App: React.FC = () => {
   return (
-    <div>
-      <h1>Hello, React with TypeScript and Webpack!</h1>
-    </div>
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<ViewAudience />} />
+      </Routes>
+    </BrowserRouter>
   );
 };
 

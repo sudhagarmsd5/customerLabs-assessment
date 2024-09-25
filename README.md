@@ -15,6 +15,7 @@
 9. npm install tailwindcss-animate class-variance-authority clsx tailwind-merge
 10.npm install lucide-react
 11. npx shadcn@latest init
+12.npm install react-router@6 react-router-dom@6
 ```
 
 
