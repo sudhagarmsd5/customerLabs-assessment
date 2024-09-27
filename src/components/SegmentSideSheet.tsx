@@ -6,7 +6,8 @@ import { SegmentSideSheetProps } from '@/types/interface'
 import { SegmentSchemaType, segmentSchema } from '@/lib/schema/schema';
 import Header from './header/Header'
 import { Input } from '@/lib/ui/input';
-import { Select, SelectTrigger, SelectValue, SelectContent, SelectGroup, SelectLabel, SelectItem } from '@/lib/ui/select';
+// import { Select, SelectTrigger, SelectValue, SelectContent, SelectGroup, SelectLabel, SelectItem } from '@/lib/ui/select';
+import Select from "react-select";
 
 const SegmentSideSheet: React.FC<SegmentSideSheetProps> = ({ children }) => {
   const {
@@ -31,13 +32,17 @@ const SegmentSideSheet: React.FC<SegmentSideSheetProps> = ({ children }) => {
     { id: 7, "label": 'State', "value": 'state' }
   ];
 
+  
+
   const [dynamicSchemas, setDynamicSchemas] = useState([])
 
   const handleAddNewSchema = () => {
     const segmentValue = getValues().segment_options
     console.log(segmentValue);
-    setDynamicSchemas([...dynamicSchemas, segmentValue])
-    setValue('segment_options',undefined)
+    if ((segmentValue && Object.keys(segmentValue).length !== 0)) {
+      setDynamicSchemas([...dynamicSchemas, segmentValue])
+      setValue('segment_options', {})
+    }
   }
   console.log(errors)
 
@@ -78,43 +83,34 @@ const SegmentSideSheet: React.FC<SegmentSideSheetProps> = ({ children }) => {
 
               {
                 dynamicSchemas.map((item: any, index) => (
-                  <div>
-                    <Select value={item.value} defaultValue={item.value}>
-                      <SelectTrigger className="w-[250px]">
-                        <SelectValue placeholder="Add schema to segment" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectGroup>
-                          {segmentSchemaValues.map((item) => (
-                            <SelectItem key={item.id} value={item.value}>{item.label}</SelectItem>
-                          ))}
-                        </SelectGroup>
-                      </SelectContent>
-                    </Select>
-                  </div>
+                  <Select
+                  className='pointer-events-none'
+                  options={segmentSchemaValues}
+                  value={item}
+                />
                 ))
               }
 
-              <Controller
+              {/* <Controller
                 name="segment_options"
                 control={control}
                 render={({ field }: any) => (
                   <Select
                     {...field}
                     onValueChange={(value: any) => {
-                      const selectedItem = segmentSchemaValues.find(item => item.id === JSON.parse(value).id);
+                      const selectedItem = segmentSchemaValues.find(item => item.id === Number(value));
                       console.log(selectedItem);
                       field.onChange(selectedItem);
                     }}
-                    value={JSON.stringify(field.value)} // Make sure this corresponds to the object
-                  >
+                    value={field.value}
+                  >``
                     <SelectTrigger className="w-[250px]">
                       <SelectValue placeholder="Add schema to segment" />
                     </SelectTrigger>
                     <SelectContent>
                       <SelectGroup>
                         {segmentSchemaValues.map((item) => (
-                          <SelectItem key={item.id} value={JSON.stringify(item)}> {/* Pass the entire object */}
+                          <SelectItem key={item.id} value={item.id.toString()}> 
                             {item.label}
                           </SelectItem>
                         ))}
@@ -122,9 +118,21 @@ const SegmentSideSheet: React.FC<SegmentSideSheetProps> = ({ children }) => {
                     </SelectContent>
                   </Select>
                 )}
-              />
+              /> */}
 
-
+              <Controller
+                name="segment_options"
+                control={control}
+                render={({ field: { onChange, onBlur, value, ref } }) => (
+                  <Select
+                    options={segmentSchemaValues}
+                    onChange={onChange}
+                    onBlur={onBlur}
+                    value={value}
+                    placeholder="Select an option"
+                  />
+                )}
+                />
             </div>
 
             <div>

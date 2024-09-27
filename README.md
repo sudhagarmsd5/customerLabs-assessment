@@ -17,6 +17,7 @@
 11. npx shadcn@latest init
 12.npm install react-router@6 react-router-dom@6
 13.npm install react-hook-form zod @hookform/resolvers
+14.npm install react-select
 ```
 
 
