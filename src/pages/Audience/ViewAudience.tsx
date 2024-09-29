@@ -12,14 +12,14 @@ const ViewAudience = () => {
 
                 <Sheet open={openSideSheet} onOpenChange={setopenSideSheet}>
                     <SheetTrigger asChild>
-                        <button type='button' className='bg-blue-300 py-2 px-3 font-medium text-sm text-white'>Save segment</button>
+                        <button type='button' className='bg-blue-300 py-2 px-3 font-medium text-sm text-white'>Save Segment</button>
 
                     </SheetTrigger>
                     <SheetContent className='w-full max-w-lg'>
 
                         {
                             openSideSheet && (
-                                <SegmentSideSheet>
+                                <SegmentSideSheet setopenSideSheet={setopenSideSheet}>
                                 </SegmentSideSheet>
                             )
                         }
