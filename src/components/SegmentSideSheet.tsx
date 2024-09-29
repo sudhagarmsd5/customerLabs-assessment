@@ -122,7 +122,7 @@ const SegmentSideSheet: React.FC<any> = ({ setopenSideSheet }: any) => {
               />
             </>)}
             <div className='py-2'>
-              <button className="text-emeraldGreen text-sm font-medium " onClick={(e)=>{ e.preventDefault(); handleAddNewSchema}} disabled={selectSchemasOptions.length == 0}> + <span className='text-decoration-line: underline'>Add new schema</span></button>
+              <button className="text-emeraldGreen text-sm font-medium " onClick={(e)=>{ e.preventDefault();handleAddNewSchema()}} disabled={selectSchemasOptions.length == 0}> + <span className='text-decoration-line: underline'>Add new schema</span></button>
             </div>
           </div>
         </div>
