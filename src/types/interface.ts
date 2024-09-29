@@ -2,6 +2,8 @@ import { ReactNode } from "react";
 
 interface SegmentSideSheetProps {
   children: ReactNode;
+  openSideSheet: boolean
+  setopenSideSheet: any;
 }
 
 interface HeaderComponentProps {

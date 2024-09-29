@@ -1,26 +1,31 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useForm, SubmitHandler, Controller } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Sheet, SheetContent, SheetTrigger, SheetFooter } from "@/lib/ui/sheet"
-import { SegmentSideSheetProps } from '@/types/interface'
 import { SegmentSchemaType, segmentSchema } from '@/lib/schema/schema';
 import Header from './header/Header'
 import { Input } from '@/lib/ui/input';
-// import { Select, SelectTrigger, SelectValue, SelectContent, SelectGroup, SelectLabel, SelectItem } from '@/lib/ui/select';
 import Select from "react-select";
+import { Minus } from 'lucide-react';
 
-const SegmentSideSheet: React.FC<SegmentSideSheetProps> = ({ children }) => {
+const SegmentSideSheet: React.FC<any> = ({}) => {
   const {
     register,
     control,
     handleSubmit,
     getValues,
     setValue,
-    reset,
     formState: { errors }
   } = useForm<SegmentSchemaType>({ mode: 'all', resolver: zodResolver(segmentSchema) });
 
-  const onSubmit: SubmitHandler<SegmentSchemaType> = (data) => console.log(data);
+  const onSubmit: SubmitHandler<SegmentSchemaType> = (data) => {
+
+    const payload = {
+      segment_name: data.segment_name,
+      schema: dynamicSchemas
+    }
+    console.log(payload);
+
+  }
 
   const segmentSchemaValues = [
     { id: 1, "label": 'First Name', "value": 'first_name' },
@@ -32,119 +37,104 @@ const SegmentSideSheet: React.FC<SegmentSideSheetProps> = ({ children }) => {
     { id: 7, "label": 'State', "value": 'state' }
   ];
 
-  
+
 
   const [dynamicSchemas, setDynamicSchemas] = useState([])
+  const [selectSchemasOptions, setSelectSchemasOptions] = useState([])
+
+  useEffect(() => {
+    const schemaOptions = segmentSchemaValues.filter((item1: any) => !dynamicSchemas.some((item2) => item2.id === item1.id))
+
+    setSelectSchemasOptions(schemaOptions)
+
+  }, [dynamicSchemas])
+
 
   const handleAddNewSchema = () => {
     const segmentValue = getValues().segment_options
     console.log(segmentValue);
     if ((segmentValue && Object.keys(segmentValue).length !== 0)) {
       setDynamicSchemas([...dynamicSchemas, segmentValue])
-      setValue('segment_options', {})
+      setValue('segment_options', null)
     }
   }
-  console.log(errors)
+
+  const handleRemove = (item) => {
+    const schema = dynamicSchemas.filter((val: any) => val.id != item.id)
+    setDynamicSchemas(schema)
+  }
 
   return (
-    <Sheet>
-      <SheetTrigger asChild>
-        {children}
-      </SheetTrigger>
-      <SheetContent className='w-full max-w-lg'>
-        <section>
-          <Header headerTitle='Saving Segment' navigationPath='/' />
-          <form onSubmit={handleSubmit(onSubmit)} className="segment-form">
-            <div className=''>
-              <div>
-                <p>
-                  Enter the Name of the Segment
-                </p>
-                <Input className='' {...register("segment_name")} placeholder='Name of the segment' />
-                {errors.segment_name && <span className=''>{errors.segment_name.message}</span>}
-              </div>
+    
+    <section>
+    <Header headerTitle='Saving Segment' navigationPath='/' />
+    <form onSubmit={handleSubmit(onSubmit)} className="segment-form">
+      <div className=''>
+        <div>
+          <p>
+            Enter the Name of the Segment
+          </p>
+          <Input className='' {...register("segment_name")} placeholder='Name of the segment' />
+          {errors.segment_name && <span className=''>{errors.segment_name.message}</span>}
+        </div>
 
-              <div>
-                <p>
-                  To save your segment, you need to add the schemas to build the query
-                </p>
+        <div>
+          <p>
+            To save your segment, you need to add the schemas to build the query
+          </p>
 
-              </div>
+        </div>
 
-              <div>
-                <p>
-                  User Traits
-                </p>
-                <p>
-                  Group Traits
-                </p>
+        <div>
+          <p>
+            User Traits
+          </p>
+          <p>
+            Group Traits
+          </p>
 
-              </div>
+        </div>
 
-              {
-                dynamicSchemas.map((item: any, index) => (
-                  <Select
-                  className='pointer-events-none'
-                  options={segmentSchemaValues}
-                  value={item}
-                />
-                ))
-              }
-
-              {/* <Controller
-                name="segment_options"
-                control={control}
-                render={({ field }: any) => (
-                  <Select
-                    {...field}
-                    onValueChange={(value: any) => {
-                      const selectedItem = segmentSchemaValues.find(item => item.id === Number(value));
-                      console.log(selectedItem);
-                      field.onChange(selectedItem);
-                    }}
-                    value={field.value}
-                  >``
-                    <SelectTrigger className="w-[250px]">
-                      <SelectValue placeholder="Add schema to segment" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectGroup>
-                        {segmentSchemaValues.map((item) => (
-                          <SelectItem key={item.id} value={item.id.toString()}> 
-                            {item.label}
-                          </SelectItem>
-                        ))}
-                      </SelectGroup>
-                    </SelectContent>
-                  </Select>
-                )}
-              /> */}
-
-              <Controller
-                name="segment_options"
-                control={control}
-                render={({ field: { onChange, onBlur, value, ref } }) => (
-                  <Select
-                    options={segmentSchemaValues}
-                    onChange={onChange}
-                    onBlur={onBlur}
-                    value={value}
-                    placeholder="Select an option"
-                  />
-                )}
-                />
+        {
+          dynamicSchemas.map((item: any, index) => (
+            <div className='flex space-x-3'>
+              <Select
+                className='pointer-events-none'
+                options={segmentSchemaValues}
+                value={item}
+              />
+              <button className="p-2" onClick={() => handleRemove(item)}>
+                <Minus className="size-5" />
+              </button>
             </div>
+          ))
+        }
 
-            <div>
-              <p onClick={handleAddNewSchema}>+Add new schema</p>
-            </div>
-            <button type="submit">submit!</button>
-          </form>
-        </section>
-        <SheetFooter>
-        </SheetFooter>
-      </SheetContent>
-    </Sheet>
+        {selectSchemasOptions.length > 0 && (<>
+          <Controller
+            name="segment_options"
+            control={control}
+            render={({ field: { onChange, onBlur, value, ref } }) => (
+              <Select
+                options={selectSchemasOptions}
+                onChange={onChange}
+                onBlur={onBlur}
+                value={value}
+                placeholder="Select an option"
+              />
+            )}
+          />
+        </>)}
+
+      </div>
+
+      <div>
+        <button onClick={handleAddNewSchema} disabled={selectSchemasOptions.length == 0}>+Add new schema</button>
+      </div>
+
+      <button type="submit">submit!</button>
+    </form>
+  </section>
   )
 }
 
