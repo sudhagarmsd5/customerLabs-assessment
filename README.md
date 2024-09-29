@@ -1,7 +1,16 @@
 # customerLabs-assessment
 ## Reactjs assessment using webpack
 
-### Project Setup
+### App Screenshots
+
+## 1. screenshot - 1 <br/>
+ ![screenshot_1](./src/assets/image.png)
+ 
+## 2. screenshot - 2 <br/>
+![screenshot_1](./src/assets/image2.png)
+
+
+### Project Setup packages list
 
 ```console
 1. npm init -y
@@ -19,6 +28,7 @@
 13.npm install react-hook-form zod @hookform/resolvers
 14.npm install react-select
 ```
+
 
 
 

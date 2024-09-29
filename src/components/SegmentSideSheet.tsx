@@ -97,7 +97,7 @@ const SegmentSideSheet: React.FC<any> = ({ setopenSideSheet }: any) => {
                     options={segmentSchemaValues}
                     value={item}
                   />
-                  <button className="py-2 px-3 bg-softMint" onClick={() => handleRemove(item)}>
+                  <button className="py-2 px-3 bg-softMint" onClick={(e: any) => { e.preventDefault(); handleRemove(item) }}>
                     <Minus className=" text-slateGrey" />
                   </button>
                 </div>
